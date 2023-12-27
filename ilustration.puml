@@ -1,0 +1,42 @@
+@startuml
+
+' Declaración de la interfaz io.Writer
+interface "io.Writer" {
+    + Write([]byte) (int, error)
+}
+
+' Declaración de la interfaz http.ResponseWriter que extiende io.Writer
+interface "http.ResponseWriter" {
+    + Header() Header
+    + Write([]byte) (int, error)
+    + WriteHeader(statusCode int)
+}
+"http.ResponseWriter" --|> "io.Writer"
+
+' Función handler
+class "handler()" {
+    + handler(http.ResponseWriter, *http.Request)
+}
+
+' Interacción entre handler y http.ResponseWriter
+"handler()" -right-> "http.ResponseWriter" : utiliza
+
+' Clases y objetos que satisfacen la interfaz io.Writer
+class "Buffer" {
+    + Write([]byte) (int, error)
+}
+"Buffer" --|> "io.Writer"
+
+class "File" {
+    + Write([]byte) (int, error)
+}
+"File" --|> "io.Writer"
+
+note right of "handler()"
+  data := []byte(`{"message": "Hello, World!"}`)
+  if _, err := w.Write(data); err != nil {
+      log.Println("Error writing response:", err)
+  }
+end note
+
+@enduml
