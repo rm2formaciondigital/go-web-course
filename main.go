@@ -8,8 +8,9 @@ import (
 )
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
+	bio := `<script>alert("hahahah, you have been hacked!");</script>`
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	fmt.Fprint(w, "<h1>Welcome to my awesome site!</h1>")
+	fmt.Fprint(w, "<h1>Welcome to my awesome site!</h1><p>Bio:"+bio+"</p>")
 }
 
 func contactHandler(w http.ResponseWriter, r *http.Request) {
