@@ -5,15 +5,14 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"path/filepath"
 
 	"github.com/go-chi/chi/v5"
 )
 
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	// bio := `<script>alert("hahahah, you have been hacked!");</script>`
+func executeTemplate(w http.ResponseWriter, filepath string) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	// fmt.Fprint(w, "<h1>Welcome to my awesome site!</h1><p>Bio:"+bio+"</p>")
-	tpl, err := template.ParseFiles("templates/home.gotmpl")
+	tpl, err := template.ParseFiles(filepath)
 	if err != nil {
 		log.Printf("parsing template: %v", err)
 		http.Error(w, "There was an error parsing the template.", http.StatusInternalServerError)
@@ -27,9 +26,14 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	tplPath := filepath.Join("templates", "home.gotmpl")
+	executeTemplate(w, tplPath)
+}
+
 func contactHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	fmt.Fprint(w, "<h1>Contact Page</h1><p>To get in touch, email me at <a "+"href=\"mailto:jon@calhoun.io\">jon@calhoun.io</a>.")
+	tplPath := filepath.Join("templates", "contact.gotmpl")
+	executeTemplate(w, tplPath)
 }
 
 func contactIdHandler(w http.ResponseWriter, r *http.Request) {
