@@ -1,20 +1,21 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
 	"os"
 )
 
-type User struct {
-	Name string
-	Age  int
-	Bio  string
-	Meta userMeta
+type userMeta struct {
+	Visits   int
+	Articles []string
 }
 
-type userMeta struct {
-	Visits int
+type User struct {
+	Name     string
+	Age      int
+	Bio      string
+	Meta     userMeta
+	IsActive bool
 }
 
 func main() {
@@ -30,25 +31,11 @@ func main() {
 		Age:  32,
 		Bio:  bio,
 		Meta: userMeta{
-			Visits: 1500,
+			Visits:   1500,
+			Articles: []string{"The first article", "The second article", "The third article", "Fourth article"},
 		},
+		IsActive: true,
 	}
-	// user1 := struct {
-	// 	Name string
-	// 	Age  int
-	// 	Meta struct {
-	// 		Visits int
-	// 	}
-	// }{
-	// 	Name: "Ramiro",
-	// 	Age:  33,
-	// 	Meta: struct{ Visits int }{
-	// 		Visits: 66,
-	// 	},
-	// }
-
-	fmt.Println(user.Meta.Visits)
-	// fmt.Println(user1.Meta.Visits)
 
 	err = t.Execute(os.Stdout, user)
 	if err != nil {

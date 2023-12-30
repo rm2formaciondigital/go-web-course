@@ -1,12 +1,30 @@
 <h1>Hello, {{.Name}}</h1>
-{{.Age}}
-{{.Meta.Visits}}
+<p>{{.Age}}</p>
+<p>{{.Bio}}</p>
+<p>{{.Meta.Visits}}</p>
+<p>{{index .Meta.Articles 0}}</p>
+<p>{{ .IsActive }}</p>
+
+<h3>Articles</h3>
+{{if .Meta.Articles}}
+<ul>
+    {{ range .Meta.Articles }}
+    <li>{{.}}</li>
+    {{end}}
+</ul>
+    {{else}}
+    <p>No hay Articulos</p>
+{{end}}
+
 
 <script>
-const user = {
-    "name": {{.Name}},
-    "Age": {{.Age}},
-    "Bio": {{.Bio}},
-    };
-console.log(user);
+  const user = {
+      "name": {{.Name}},
+      "Age": {{.Age}},
+      "Bio": {{.Bio}},
+      "Visits": {{.Meta.Visits}},
+      "Articles": , {{index .Meta.Articles 0}},
+      "IsActive": {{ .IsActive }},
+      };
+  console.log(user);
 </script>
