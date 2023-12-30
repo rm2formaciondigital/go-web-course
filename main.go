@@ -49,9 +49,7 @@ func contactIdHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func faqHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	fmt.Fprint(w, `<h2>Q: Is there a free versión</h2>
-	<h2>A: Yes: We Offer a free trial for 30 days on any paid plans.</h2>`)
+	executeTemplate(w, filepath.Join("templates", "faq.gotmpl"))
 }
 
 func main() {
