@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"gocourse/views"
 	"html/template"
 	"log"
 	"net/http"
 	"path/filepath"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/rm2formaciondigital/go-web-course/views"
 )
 
 func executeTemplate(w http.ResponseWriter, filepath string) {
