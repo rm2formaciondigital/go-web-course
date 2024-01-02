@@ -2,59 +2,41 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"path/filepath"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/rm2formaciondigital/go-web-course/controllers"
 	"github.com/rm2formaciondigital/go-web-course/views"
 )
 
-func executeTemplate(w http.ResponseWriter, filepath string) {
-	t, err := views.Parse(filepath)
-	if err != nil {
-		log.Printf("parsing template: %v", err)
-		http.Error(w, "There was an error parsing the template.", http.StatusInternalServerError)
-		return
-	}
-	t.Execute(w, nil)
-}
-
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	tplPath := filepath.Join("templates", "home.gotmpl")
-	executeTemplate(w, tplPath)
-}
-
-func contactHandler(w http.ResponseWriter, r *http.Request) {
-	tplPath := filepath.Join("templates", "contact.gotmpl")
-	executeTemplate(w, tplPath)
-}
-
-func contactIdHandler(w http.ResponseWriter, r *http.Request) {
-	contactID := chi.URLParam(r, "contactID")
-
-	ctx := r.Context()
-	key, ok := ctx.Value("key").(string)
-	if !ok {
-		key = "clave no definida"
-	}
-
-	w.Write([]byte(fmt.Sprintf("Hi %v, %v", contactID, key)))
-}
-
-func faqHandler(w http.ResponseWriter, r *http.Request) {
-	executeTemplate(w, filepath.Join("templates", "faq.gotmpl"))
-}
-
 func main() {
 	r := chi.NewRouter()
-	r.Get("/", homeHandler)
-	r.Get("/contact", contactHandler)
-	r.Get("/contact/{contactID}", contactIdHandler)
-	r.Get("/faq", faqHandler)
+
+	tpl, err := views.Parse(filepath.Join("templates", "home.gotmpl"))
+	if err != nil {
+		panic(err)
+	}
+	r.Get("/", controllers.StaticHandler(tpl))
+
+	tpl, err = views.Parse(filepath.Join("templates", "contact.gotmpl"))
+	if err != nil {
+		panic(err)
+	}
+
+	r.Get("/contact", controllers.StaticHandler(tpl))
+
+	tpl, err = views.Parse(filepath.Join("templates", "faq.gotmpl"))
+	if err != nil {
+		panic(err)
+	}
+
+	r.Get("/faq", controllers.StaticHandler(tpl))
+
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Page Not Found", http.StatusNotFound)
 	})
+
 	fmt.Println("Starting the server on http://localhost:3000")
 	http.ListenAndServe(":3000", r)
 }
