@@ -1,45 +1,31 @@
 package main
 
 import (
-	"html/template"
-	"os"
+	"errors"
+	"fmt"
 )
 
-type userMeta struct {
-	Visits   int
-	Articles []string
-}
-
-type User struct {
-	Name     string
-	Age      int
-	Bio      string
-	Meta     userMeta
-	IsActive bool
-}
-
 func main() {
-	t, err := template.ParseFiles("hello.gotmpl")
+	err := B()
+	// TODO: Determine if the `err` variable is an `ErrNotFound`
+	if errors.Is(err, ErrNotFound) {
+		fmt.Println("El error es Error Not Found")
+	} else {
+		fmt.Println("El error es otro")
+	}
+
+}
+
+var ErrNotFound = errors.New("not found")
+
+func A() error {
+	return ErrNotFound
+}
+
+func B() error {
+	err := A()
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("b: %w", err)
 	}
-
-	bio := `<script>alert("hahahah, you have been hacked!");</script>`
-
-	user := User{
-		Name: "John Smith",
-		Age:  32,
-		Bio:  bio,
-		Meta: userMeta{
-			Visits:   1500,
-			Articles: []string{"The first article", "The second article", "The third article", "Fourth article"},
-		},
-		IsActive: true,
-	}
-
-	err = t.Execute(os.Stdout, user)
-	if err != nil {
-		panic(err)
-	}
-
+	return nil
 }

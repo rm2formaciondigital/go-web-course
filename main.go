@@ -22,6 +22,9 @@ func main() {
 	r.Get("/faq", controllers.StaticHandler(
 		views.Must(views.Parse(filepath.Join("templates", "faq.gotmpl")))))
 
+	r.Get("/support", controllers.StaticHandler(
+		views.Must(views.Parse(filepath.Join("templates", "support.gotmpl")))))
+
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Page Not Found", http.StatusNotFound)
 	})
