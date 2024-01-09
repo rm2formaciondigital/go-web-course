@@ -1,16 +1,10 @@
 <h1>FAQ Page</h1>
 <ul>
-  <li>
-    <b>there a free versión?</b> Yes!, We Offer a free trial
-    for 30 days on any paid plans.
-  </li>
-  <li>
-    <b>What are your support hours?</b> We hace support
-    staff answering emails 24/7, though response times may
-    be a bit slower on weekends.
-  </li>
-  <li>
-    <b>How do I contact support?</b> Email us -
-    support@lenslocked.com
-  </li>
+  {{range .}}
+    {{template "qa" .}}
+  {{end}}
 </ul>
+
+{{define "qa"}}
+<li><b>{{.Question}}</b> {{.Answer}}</li>
+{{end}}
