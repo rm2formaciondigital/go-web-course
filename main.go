@@ -25,6 +25,7 @@ func main() {
 	usersC := controllers.Users{}
 	usersC.Templates.New = views.Must(views.ParseFS(templates.FS, "signup.gotmpl", "tailwind.gotmpl"))
 	r.Get("/signup", usersC.New)
+	r.Post("/users", usersC.Create)
 
 	r.Get("/support", controllers.StaticHandler(
 		views.Must(views.ParseFS(templates.FS, "support.gotmpl", "tailwind.gotmpl"))))
