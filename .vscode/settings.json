@@ -1,0 +1,5 @@
+{
+  "html.format.wrapLineLength": 160,
+  "editor.wordWrapColumn": 120,
+  "html.format.wrapAttributes": "auto"
+}
